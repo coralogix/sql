@@ -138,7 +138,7 @@ public class LocalClusterState {
         this.resolver = resolver;
     }
 
-    private LocalClusterState() {
+    public LocalClusterState() {
         cache = CacheBuilder.newBuilder().maximumSize(100).build();
     }
 
