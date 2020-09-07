@@ -16,6 +16,7 @@
 package com.amazon.opendistroforelasticsearch.sql.legacy.executor.format;
 
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.LocalClusterState;
+import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.StateProvider;
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.mapping.FieldMappings;
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.mapping.TypeMappings;
 import com.google.common.annotations.VisibleForTesting;
@@ -117,7 +118,7 @@ public class DateFieldFormatter {
     }
 
     private Map<String, List<String>> getDateFieldFormatMap(String indexName) {
-        LocalClusterState state = LocalClusterState.state();
+        StateProvider state = LocalClusterState.state();
         Map<String, List<String>> formatMap = new HashMap<>();
 
         String[] indices = indexName.split("\\|");

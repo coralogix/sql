@@ -33,6 +33,7 @@ import com.amazon.opendistroforelasticsearch.sql.legacy.antlr.semantic.types.Typ
 import com.amazon.opendistroforelasticsearch.sql.legacy.domain.ColumnTypeProvider;
 import com.amazon.opendistroforelasticsearch.sql.legacy.domain.QueryActionRequest;
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.LocalClusterState;
+import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.StateProvider;
 import com.amazon.opendistroforelasticsearch.sql.legacy.exception.SQLFeatureDisabledException;
 import com.amazon.opendistroforelasticsearch.sql.legacy.exception.SqlParseException;
 import com.amazon.opendistroforelasticsearch.sql.legacy.executor.ActionRequestRestExecutorFactory;
@@ -273,7 +274,7 @@ public class RestSqlAction extends BaseRestHandler {
     }
 
     private static ColumnTypeProvider performAnalysis(String sql) {
-        LocalClusterState clusterState = LocalClusterState.state();
+        StateProvider clusterState = LocalClusterState.state();
         SqlAnalysisConfig config = new SqlAnalysisConfig(
             clusterState.getSettingValue(QUERY_ANALYSIS_ENABLED),
             clusterState.getSettingValue(QUERY_ANALYSIS_SEMANTIC_SUGGESTION),

@@ -16,6 +16,7 @@
 package com.amazon.opendistroforelasticsearch.sql.legacy.unittest;
 
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.LocalClusterState;
+import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.StateProvider;
 import com.amazon.opendistroforelasticsearch.sql.legacy.executor.Format;
 import com.amazon.opendistroforelasticsearch.sql.legacy.plugin.SqlSettings;
 import com.amazon.opendistroforelasticsearch.sql.legacy.request.SqlRequestParam;
@@ -44,7 +45,7 @@ public class SqlRequestParamTest {
         // Force return empty list to avoid ClusterSettings be invoked which is a final class and hard to mock.
         // In this case, default value in Setting will be returned all the time.
         doReturn(emptyList()).when(settings).getSettings();
-        LocalClusterState.state().setSqlSettings(settings);
+        ((StateProvider.Cached) LocalClusterState.state()).setSqlSettings(settings);
     }
 
     @Test

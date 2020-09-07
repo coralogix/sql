@@ -16,6 +16,7 @@
 package com.amazon.opendistroforelasticsearch.sql.legacy.unittest;
 
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.LocalClusterState;
+import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.StateProvider;
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.mapping.FieldMappings;
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.mapping.IndexMappings;
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.mapping.TypeMappings;
@@ -166,7 +167,7 @@ public class LocalClusterStateTest {
             listener[0] = (ClusterStateListener) invocation.getArguments()[0];
             return null;
         }).when(mockService).addListener(any());
-        LocalClusterState.state().setClusterService(mockService);
+        ((StateProvider.Cached) LocalClusterState.state()).setClusterService(mockService);
 
         // 1.Actual findMappings be invoked only once
         for (int i = 0; i < 10; i++) {
@@ -192,7 +193,7 @@ public class LocalClusterStateTest {
         // Force return empty list to avoid ClusterSettings be invoked which is a final class and hard to mock.
         SqlSettings settings = spy(new SqlSettings());
         doReturn(emptyList()).when(settings).getSettings();
-        LocalClusterState.state().setSqlSettings(settings);
+        ((StateProvider.Cached) LocalClusterState.state()).setSqlSettings(settings);
 
         Assert.assertEquals(2, (int) LocalClusterState.state().getSettingValue(QUERY_SLOWLOG));
     }

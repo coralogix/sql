@@ -23,6 +23,7 @@ import com.alibaba.druid.sql.ast.statement.SQLSelectQuery;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlASTVisitorAdapter;
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.LocalClusterState;
+import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.StateProvider;
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.mapping.FieldMappings;
 import com.amazon.opendistroforelasticsearch.sql.legacy.rewriter.RewriteRule;
 import com.amazon.opendistroforelasticsearch.sql.legacy.rewriter.matchtoterm.VerificationException;
@@ -71,9 +72,9 @@ public class JoinRewriteRule implements RewriteRule<SQLQueryExpr> {
 
     private static final String DOT = ".";
     private int aliasSuffix = 0;
-    private final LocalClusterState clusterState;
+    private final StateProvider clusterState;
 
-    public JoinRewriteRule(LocalClusterState clusterState) {
+    public JoinRewriteRule(StateProvider clusterState) {
         this.clusterState = clusterState;
     }
 

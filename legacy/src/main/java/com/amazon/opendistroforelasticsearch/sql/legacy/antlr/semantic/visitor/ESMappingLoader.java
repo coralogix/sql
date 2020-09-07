@@ -25,6 +25,7 @@ import com.amazon.opendistroforelasticsearch.sql.legacy.antlr.semantic.types.bas
 import com.amazon.opendistroforelasticsearch.sql.legacy.antlr.visitor.EarlyExitAnalysisException;
 import com.amazon.opendistroforelasticsearch.sql.legacy.antlr.visitor.GenericSqlParseTreeVisitor;
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.LocalClusterState;
+import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.StateProvider;
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.mapping.FieldMappings;
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.mapping.IndexMappings;
 import com.amazon.opendistroforelasticsearch.sql.legacy.utils.StringUtils;
@@ -45,12 +46,12 @@ public class ESMappingLoader implements GenericSqlParseTreeVisitor<Type> {
     private final SemanticContext context;
 
     /** Local cluster state for mapping query */
-    private final LocalClusterState clusterState;
+    private final StateProvider clusterState;
 
     /** Threshold to decide if continue the analysis */
     private final int threshold;
 
-    public ESMappingLoader(SemanticContext context, LocalClusterState clusterState, int threshold) {
+    public ESMappingLoader(SemanticContext context, StateProvider clusterState, int threshold) {
         this.context = context;
         this.clusterState = clusterState;
         this.threshold = threshold;

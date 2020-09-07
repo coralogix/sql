@@ -26,6 +26,7 @@ import com.amazon.opendistroforelasticsearch.sql.legacy.domain.Order;
 import com.amazon.opendistroforelasticsearch.sql.legacy.domain.Select;
 import com.amazon.opendistroforelasticsearch.sql.legacy.domain.Where;
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.LocalClusterState;
+import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.StateProvider;
 import com.amazon.opendistroforelasticsearch.sql.legacy.exception.SqlParseException;
 import com.amazon.opendistroforelasticsearch.sql.legacy.executor.Format;
 import com.amazon.opendistroforelasticsearch.sql.legacy.executor.format.Schema;
@@ -105,7 +106,7 @@ public class DefaultQueryAction extends QueryAction {
 
     @VisibleForTesting
     public void checkAndSetScroll() {
-        LocalClusterState clusterState = LocalClusterState.state();
+        StateProvider clusterState = LocalClusterState.state();
 
         Integer fetchSize = sqlRequest.fetchSize();
         TimeValue timeValue = clusterState.getSettingValue(CURSOR_KEEPALIVE);

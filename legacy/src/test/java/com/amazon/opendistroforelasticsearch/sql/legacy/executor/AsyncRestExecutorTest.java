@@ -16,6 +16,7 @@
 package com.amazon.opendistroforelasticsearch.sql.legacy.executor;
 
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.LocalClusterState;
+import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.StateProvider;
 import com.amazon.opendistroforelasticsearch.sql.legacy.plugin.SqlSettings;
 import com.amazon.opendistroforelasticsearch.sql.legacy.query.QueryAction;
 import com.amazon.opendistroforelasticsearch.sql.legacy.request.SqlRequest;
@@ -71,7 +72,7 @@ public class AsyncRestExecutorTest {
 
         SqlSettings settings = spy(new SqlSettings());
         doReturn(emptyList()).when(settings).getSettings();
-        LocalClusterState.state().setSqlSettings(settings);
+        ((StateProvider.Cached) LocalClusterState.state()).setSqlSettings(settings);
     }
 
     @Test

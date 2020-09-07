@@ -22,6 +22,7 @@ import com.amazon.opendistroforelasticsearch.sql.legacy.domain.Condition;
 import com.amazon.opendistroforelasticsearch.sql.legacy.domain.Select;
 import com.amazon.opendistroforelasticsearch.sql.legacy.domain.Where;
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.LocalClusterState;
+import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.StateProvider;
 import com.amazon.opendistroforelasticsearch.sql.legacy.exception.SqlParseException;
 import com.amazon.opendistroforelasticsearch.sql.legacy.parser.ElasticSqlExprParser;
 import com.amazon.opendistroforelasticsearch.sql.legacy.parser.ScriptFilter;
@@ -231,9 +232,9 @@ public class CheckScriptContents {
     }
 
     public static void mockLocalClusterState(String mappings) {
-        LocalClusterState.state().setClusterService(mockClusterService(mappings));
-        LocalClusterState.state().setResolver(mockIndexNameExpressionResolver());
-        LocalClusterState.state().setSqlSettings(mockSqlSettings());
+        ((StateProvider.Cached) LocalClusterState.state()).setClusterService(mockClusterService(mappings));
+        ((StateProvider.Cached) LocalClusterState.state()).setResolver(mockIndexNameExpressionResolver());
+        ((StateProvider.Cached) LocalClusterState.state()).setSqlSettings(mockSqlSettings());
     }
 
     public static ClusterService mockClusterService(String mappings) {

@@ -19,6 +19,7 @@ import com.amazon.opendistroforelasticsearch.sql.elasticsearch.setting.Elasticse
 import com.amazon.opendistroforelasticsearch.sql.elasticsearch.storage.script.ExpressionScriptEngine;
 import com.amazon.opendistroforelasticsearch.sql.elasticsearch.storage.serialization.DefaultExpressionSerializer;
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.LocalClusterState;
+import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.StateProvider;
 import com.amazon.opendistroforelasticsearch.sql.legacy.executor.AsyncRestExecutor;
 import com.amazon.opendistroforelasticsearch.sql.legacy.metrics.Metrics;
 import com.amazon.opendistroforelasticsearch.sql.legacy.plugin.RestSqlAction;
@@ -93,7 +94,7 @@ public class SQLPlugin extends Plugin implements ActionPlugin, ScriptPlugin {
     Objects.requireNonNull(clusterService, "Cluster service is required");
     Objects.requireNonNull(pluginSettings, "Cluster settings is required");
 
-    LocalClusterState.state().setResolver(indexNameExpressionResolver);
+    ((StateProvider.Cached) LocalClusterState.state()).setResolver(indexNameExpressionResolver);
     Metrics.getInstance().registerDefaultMetrics();
 
     return Arrays.asList(
@@ -119,8 +120,8 @@ public class SQLPlugin extends Plugin implements ActionPlugin, ScriptPlugin {
     this.clusterService = clusterService;
     this.pluginSettings = new ElasticsearchSettings(clusterService.getClusterSettings());
 
-    LocalClusterState.state().setClusterService(clusterService);
-    LocalClusterState.state().setSqlSettings(sqlSettings);
+    ((StateProvider.Cached) LocalClusterState.state()).setClusterService(clusterService);
+    ((StateProvider.Cached) LocalClusterState.state()).setSqlSettings(sqlSettings);
 
     return super
         .createComponents(client, clusterService, threadPool, resourceWatcherService, scriptService,

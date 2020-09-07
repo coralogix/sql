@@ -16,6 +16,7 @@
 package com.amazon.opendistroforelasticsearch.sql.legacy.util;
 
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.LocalClusterState;
+import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.StateProvider;
 import com.google.common.collect.ImmutableMap;
 import org.elasticsearch.cluster.ClusterState;
 import org.elasticsearch.cluster.metadata.IndexMetadata;
@@ -160,9 +161,9 @@ public class MultipleIndexClusterUtils {
     }
 
     public static void mockLocalClusterState(Map<String, ImmutableOpenMap<String, ImmutableOpenMap<String, MappingMetadata>>> indexMapping) {
-        LocalClusterState.state().setClusterService(mockClusterService(indexMapping));
-        LocalClusterState.state().setResolver(mockIndexNameExpressionResolver());
-        LocalClusterState.state().setSqlSettings(mockSqlSettings());
+        ((StateProvider.Cached) LocalClusterState.state()).setClusterService(mockClusterService(indexMapping));
+        ((StateProvider.Cached) LocalClusterState.state()).setResolver(mockIndexNameExpressionResolver());
+        ((StateProvider.Cached) LocalClusterState.state()).setSqlSettings(mockSqlSettings());
     }
 
 

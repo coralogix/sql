@@ -20,6 +20,7 @@ import com.amazon.opendistroforelasticsearch.sql.legacy.domain.KVValue;
 import com.amazon.opendistroforelasticsearch.sql.legacy.domain.MethodField;
 import com.amazon.opendistroforelasticsearch.sql.legacy.domain.Select;
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.LocalClusterState;
+import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.StateProvider;
 import com.amazon.opendistroforelasticsearch.sql.legacy.exception.SqlParseException;
 import com.amazon.opendistroforelasticsearch.sql.legacy.executor.Format;
 import com.amazon.opendistroforelasticsearch.sql.legacy.metrics.Metrics;
@@ -256,7 +257,7 @@ public class DefaultQueryActionTest {
     }
 
     private void mockLocalClusterStateAndInitializeMetrics(boolean cursorEnabled, Integer fetchSize, TimeValue time) {
-        LocalClusterState mockLocalClusterState = mock(LocalClusterState.class);
+        StateProvider mockLocalClusterState = mock(StateProvider.Cached.class);
         LocalClusterState.state(mockLocalClusterState);
         doReturn(cursorEnabled).when(mockLocalClusterState).getSettingValue(CURSOR_ENABLED);
         doReturn(fetchSize).when(mockLocalClusterState).getSettingValue(CURSOR_FETCH_SIZE);

@@ -27,6 +27,7 @@ import com.amazon.opendistroforelasticsearch.sql.legacy.antlr.syntax.SyntaxAnaly
 import com.amazon.opendistroforelasticsearch.sql.legacy.antlr.visitor.AntlrSqlParseTreeVisitor;
 import com.amazon.opendistroforelasticsearch.sql.legacy.antlr.visitor.EarlyExitAnalysisException;
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.LocalClusterState;
+import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.StateProvider;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -49,7 +50,7 @@ public class OpenDistroSqlAnalyzer {
         this.config = config;
     }
 
-    public Optional<Type> analyze(String sql, LocalClusterState clusterState) {
+    public Optional<Type> analyze(String sql, StateProvider clusterState) {
         // Perform analysis for SELECT only for now because of extra code changes required for SHOW/DESCRIBE.
         if (!isSelectStatement(sql) || !config.isAnalyzerEnabled()) {
             return Optional.empty();
@@ -85,12 +86,12 @@ public class OpenDistroSqlAnalyzer {
      * @param tree          parse tree
      * @param clusterState  cluster state required for index mapping query
      */
-    public Type analyzeSemantic(ParseTree tree, LocalClusterState clusterState) {
+    public Type analyzeSemantic(ParseTree tree, StateProvider clusterState) {
         return tree.accept(new AntlrSqlParseTreeVisitor<>(createAnalyzer(clusterState)));
     }
 
     /** Factory method for semantic analyzer to help assemble all required components together */
-    private SemanticAnalyzer createAnalyzer(LocalClusterState clusterState) {
+    private SemanticAnalyzer createAnalyzer(StateProvider clusterState) {
         SemanticContext context = new SemanticContext();
         ESMappingLoader mappingLoader = new ESMappingLoader(context, clusterState, config.getAnalysisThreshold());
         TypeChecker typeChecker = new TypeChecker(context, config.isFieldSuggestionEnabled());

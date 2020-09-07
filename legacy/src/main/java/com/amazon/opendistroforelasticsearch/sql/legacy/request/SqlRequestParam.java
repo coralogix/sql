@@ -16,6 +16,7 @@
 package com.amazon.opendistroforelasticsearch.sql.legacy.request;
 
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.LocalClusterState;
+import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.StateProvider;
 import com.amazon.opendistroforelasticsearch.sql.legacy.executor.Format;
 
 import java.util.Map;
@@ -51,7 +52,7 @@ public class SqlRequestParam {
         if (requestParams.containsKey(QUERY_PARAMS_FORMAT)) {
             formatName = requestParams.get(QUERY_PARAMS_FORMAT).toLowerCase();
         } else {
-            LocalClusterState clusterState = LocalClusterState.state();
+            StateProvider clusterState = LocalClusterState.state();
             formatName = clusterState.getSettingValue(QUERY_RESPONSE_FORMAT);
         }
         Optional<Format> optionalFormat = Format.of(formatName);

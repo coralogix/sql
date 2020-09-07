@@ -22,6 +22,7 @@ import com.alibaba.druid.sql.parser.SQLExprParser;
 import com.alibaba.druid.sql.parser.Token;
 import com.amazon.opendistroforelasticsearch.sql.legacy.domain.JoinSelect;
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.LocalClusterState;
+import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.StateProvider;
 import com.amazon.opendistroforelasticsearch.sql.legacy.exception.SqlParseException;
 import com.amazon.opendistroforelasticsearch.sql.legacy.parser.ElasticSqlExprParser;
 import com.amazon.opendistroforelasticsearch.sql.legacy.parser.SqlParser;
@@ -110,7 +111,7 @@ public abstract class QueryPlannerTest {
         // Force return empty list to avoid ClusterSettings be invoked which is a final class and hard to mock.
         // In this case, default value in Setting will be returned all the time.
         doReturn(emptyList()).when(settings).getSettings();
-        LocalClusterState.state().setSqlSettings(settings);
+        ((StateProvider.Cached) LocalClusterState.state()).setSqlSettings(settings);
 
         ActionFuture mockFuture = mock(ActionFuture.class);
         when(client.execute(any(), any())).thenReturn(mockFuture);

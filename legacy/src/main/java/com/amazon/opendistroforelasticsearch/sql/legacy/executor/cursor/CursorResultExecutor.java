@@ -18,6 +18,7 @@ package com.amazon.opendistroforelasticsearch.sql.legacy.executor.cursor;
 import com.amazon.opendistroforelasticsearch.sql.legacy.cursor.CursorType;
 import com.amazon.opendistroforelasticsearch.sql.legacy.cursor.DefaultCursor;
 import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.LocalClusterState;
+import com.amazon.opendistroforelasticsearch.sql.legacy.esdomain.StateProvider;
 import com.amazon.opendistroforelasticsearch.sql.legacy.executor.Format;
 import com.amazon.opendistroforelasticsearch.sql.legacy.executor.format.Protocol;
 import com.amazon.opendistroforelasticsearch.sql.legacy.metrics.MetricName;
@@ -100,7 +101,7 @@ public class CursorResultExecutor implements CursorRestExecutor {
 
     private String handleDefaultCursorRequest(Client client, DefaultCursor cursor) {
         String previousScrollId = cursor.getScrollId();
-        LocalClusterState clusterState = LocalClusterState.state();
+        StateProvider clusterState = LocalClusterState.state();
         TimeValue scrollTimeout = clusterState.getSettingValue(CURSOR_KEEPALIVE);
         SearchResponse scrollResponse = client.prepareSearchScroll(previousScrollId).setScroll(scrollTimeout).get();
         SearchHits searchHits = scrollResponse.getHits();
