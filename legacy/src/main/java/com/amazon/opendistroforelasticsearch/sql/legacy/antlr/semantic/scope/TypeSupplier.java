@@ -51,11 +51,12 @@ public class TypeSupplier implements Supplier<Type> {
      */
     @Override
     public Type get() {
-        if (types.size() > 1) {
-            throw new SemanticAnalysisException(
-                    String.format("Field [%s] have conflict type [%s]", symbolName, types));
-        } else {
+        // Commented out because of https://coralogix.atlassian.net/browse/DEV-1736
+//        if (types.size() > 1) {
+//            throw new SemanticAnalysisException(
+//                    String.format("Field [%s] have conflict type [%s]", symbolName, types));
+//        } else {
             return symbolType;
-        }
+//        }
     }
 }
