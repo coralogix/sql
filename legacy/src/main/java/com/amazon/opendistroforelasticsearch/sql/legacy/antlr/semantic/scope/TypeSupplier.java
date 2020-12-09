@@ -18,6 +18,9 @@ package com.amazon.opendistroforelasticsearch.sql.legacy.antlr.semantic.scope;
 import com.amazon.opendistroforelasticsearch.sql.legacy.antlr.semantic.SemanticAnalysisException;
 import com.amazon.opendistroforelasticsearch.sql.legacy.antlr.semantic.types.Type;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -28,6 +31,9 @@ import java.util.function.Supplier;
  * The TypeSupplier maintain types to track different {@link Type} definition for the same symbolName.
  */
 public class TypeSupplier implements Supplier<Type> {
+
+    private static final Logger LOG = LogManager.getLogger(TypeSupplier.class);
+
     private final String symbolName;
     private final Type symbolType;
     private final Set<Type> types;
@@ -52,10 +58,8 @@ public class TypeSupplier implements Supplier<Type> {
     @Override
     public Type get() {
         if (types.size() > 1) {
-            throw new SemanticAnalysisException(
-                    String.format("Field [%s] have conflict type [%s]", symbolName, types));
-        } else {
-            return symbolType;
+            LOG.warn(String.format("Field [%s] have conflict type [%s]", symbolName, types));
         }
+        return symbolType;
     }
 }
