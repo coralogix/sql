@@ -63,6 +63,7 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static java.util.Collections.emptyMap;
 import static java.util.Collections.unmodifiableMap;
 import static java.util.stream.Collectors.toSet;
 import static org.elasticsearch.action.admin.indices.mapping.get.GetFieldMappingsResponse.FieldMappingMetadata;
@@ -521,7 +522,7 @@ public class SelectResultSet extends ResultSet {
         }
 
         if (isSelectAllOnly(query)) {
-            populateAllNestedFields(columns, fieldNameList);
+            populateAllNestedFields(columns, typeMappings);
         }
         return columns;
     }
@@ -538,18 +539,15 @@ public class SelectResultSet extends ResultSet {
      * In other cases, * means all regular fields on the level.
      * The only exception here is * picks all non-regular (nested) fields as JSON without flatten.
      */
-    private void populateAllNestedFields(List<Schema.Column> columns, List<String> fields) {
-        Set<String> nestedFieldPaths = fields.stream().
-                map(FieldMapping::new).
-                filter(FieldMapping::isPropertyField).
-                filter(f -> !f.isMultiField()).
-                map(FieldMapping::path).
-                collect(toSet());
+    private void populateAllNestedFields(List<Schema.Column> columns, Map<String, FieldMappingMetadata> fields) {
+        for (String name : fields.keySet()) {
 
-        for (String nestedFieldPath : nestedFieldPaths) {
-            columns.add(
-                    new Schema.Column(nestedFieldPath, "", Schema.Type.TEXT)
-            );
+            FieldMapping field = new FieldMapping(name, fields, emptyMap());
+            if(field.isPropertyField() && !field.isMultiField()){
+                columns.add(
+                        new Schema.Column(name, "", Schema.Type.valueOf(field.type().toUpperCase()))
+                );
+            }
         }
     }
 
