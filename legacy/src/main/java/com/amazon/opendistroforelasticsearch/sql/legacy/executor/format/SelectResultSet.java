@@ -176,11 +176,14 @@ public class SelectResultSet extends ResultSet {
         String typeName = fetchTypeName(query);
         String[] fieldNames = fetchFieldsAsArray(query);
 
+        String indexNameWithoutCluster = indexName.contains("___") ?
+                indexName.substring(indexName.indexOf("___") + 3) : indexName;
+
         // Reset boolean in the case of JOIN query where multiple calls to loadFromEsState() are made
         selectAll = isSimpleQuerySelectAll(query) || isJoinQuerySelectAll(query, fieldNames);
 
         GetFieldMappingsRequest request = new GetFieldMappingsRequest()
-                .indices(indexName)
+                .indices(indexNameWithoutCluster)
                 .types(emptyArrayIfNull(typeName))
                 .fields(selectAllFieldsIfEmpty(fieldNames))
                 .local(true);
