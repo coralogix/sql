@@ -214,6 +214,12 @@ public class TypeChecker implements GenericSqlParseTreeVisitor<Type> {
         Optional<Type> type = environment().resolve(symbol);
         if (type.isPresent()) {
             return type.get();
+        } else {
+            // We need to have escaped column names to be able to parse columns ending with numbers e.g. coralogix.variables.0
+            type = environment().resolve(new Symbol(symbol.getNamespace(), symbol.getName().replaceAll("[`\"]", "")));
+            if (type.isPresent()) {
+                return type.get();
+            }
         }
 
         String errorMsg = StringUtils.format("%s cannot be found or used here.", symbol);
