@@ -116,7 +116,8 @@ public class Schema implements Iterable<Schema.Column> {
         BINARY, // Binary types
         OBJECT,
         NESTED,
-        INTEGER_RANGE, FLOAT_RANGE, LONG_RANGE, DOUBLE_RANGE, DATE_RANGE; // Range types
+        INTEGER_RANGE, FLOAT_RANGE, LONG_RANGE, DOUBLE_RANGE, DATE_RANGE, // Range types
+        GEO_POINT;
 
         public String nameLowerCase() {
             return name().toLowerCase();
