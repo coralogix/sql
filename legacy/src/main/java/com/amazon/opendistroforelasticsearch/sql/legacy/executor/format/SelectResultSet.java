@@ -545,6 +545,7 @@ public class SelectResultSet extends ResultSet {
             FieldMapping field = new FieldMapping(name, fields, emptyMap());
             if(field.isPropertyField() && !field.isMultiField()){
                 columns.add(
+                        // returning real field type here
                         new Schema.Column(name, "", Schema.Type.valueOf(field.type().toUpperCase()))
                 );
             }
