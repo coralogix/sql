@@ -111,7 +111,7 @@ public class Schema implements Iterable<Schema.Column> {
     public enum Type {
         TEXT, KEYWORD, IP, // String types
         LONG, INTEGER, SHORT, BYTE, DOUBLE, FLOAT, HALF_FLOAT, SCALED_FLOAT, // Numeric types
-        DATE, // Date types
+        DATE, DATE_NANOS, // Date types
         BOOLEAN, // Boolean types
         BINARY, // Binary types
         OBJECT,
